@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Movie — आपकी मूवी तैयार है</title>
+  <meta name="description" content="मूवी पाने के लिए नीचे तक स्क्रॉल करें।">
+  <style>
+    :root{color-scheme:dark;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:#070912;color:#f3f5ff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:#070912}
+    .page{position:relative;width:min(100%,480px);min-height:100svh;margin:auto;overflow:hidden;border-inline:1px solid #24253b;background:radial-gradient(ellipse at 15% 0%,#6e4cff29,transparent 42%),radial-gradient(ellipse at 100% 42%,#13d8c218,transparent 35%),linear-gradient(165deg,#15152b 0%,#0a0c19 56%,#070912 100%);box-shadow:0 0 100px #02030b}
+    .page:before{content:"";position:absolute;z-index:5;top:0;left:7%;right:7%;height:1px;background:linear-gradient(90deg,transparent,#a58bff,#70e9d6,transparent);box-shadow:0 0 18px #9d84ff88}
+    .grain{position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:20px}
+    .brand{display:flex;align-items:center;gap:11px;color:#f3f5ff;font-size:13px;font-weight:700;letter-spacing:.25em;text-decoration:none}
+    .brand-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid #a58bff88;border-radius:13px;color:#c0b1ff;background:#a58bff18;box-shadow:inset 0 0 18px #a58bff12}
+    .ready{font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;color:#858aa9}.ready i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#70e9d6;box-shadow:0 0 12px #70e9d6}
+    main{position:relative;z-index:1;padding:54px 22px 0;text-align:center}
+    .eyebrow{font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.24em;text-transform:uppercase;color:#a58bff}
+    h1{margin:22px 0 0;font-size:clamp(2.3rem,12vw,4.4rem);line-height:1.02;letter-spacing:-.07em}
+    h1 span{display:inline-block;color:#c8bdff;background:linear-gradient(100deg,#d6cdff,#70e9d6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .intro{max-width:300px;margin:24px auto 0;color:#a9aec7;font-size:14px;line-height:1.7}
+    .scroll-cue{position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;margin:72px auto 0;color:#f3f5ff;text-decoration:none}
+    .scroll-cue strong{font-size:16px;font-weight:600}.scroll-cue small{color:#858aa9;font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.16em}
+    .scroll-icon{display:grid;place-items:center;width:48px;height:70px;border:1px solid #a58bff66;border-radius:28px;background:#a58bff0e;box-shadow:inset 0 0 20px #a58bff14,0 12px 38px #03040e}
+    .scroll-icon:after{content:"";width:5px;height:16px;border-radius:99px;background:linear-gradient(#70e9d6,transparent);animation:scroll-dot 1.8s ease-in-out infinite}
+    .preview{display:grid;gap:18px;margin-top:88px;padding:0 2px;text-align:left}
+    .preview-card{position:relative;min-height:144px;padding:24px;border:1px solid #ffffff12;border-radius:24px;background:linear-gradient(145deg,#ffffff0c,#ffffff03);box-shadow:0 20px 55px #02030c66;overflow:hidden}
+    .preview-card:after{content:"";position:absolute;width:120px;height:120px;right:-45px;bottom:-55px;border-radius:50%;background:#70e9d61a;filter:blur(2px)}
+    .preview-card b{display:block;margin-bottom:10px;color:#70e9d6;font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;text-transform:uppercase}
+    .preview-card p{max-width:245px;margin:0;color:#d7d9e8;font-size:15px;line-height:1.55}
+    .end-marker{display:grid;place-items:center;min-height:180px;margin-top:24px;color:#858aa9}
+    .end-marker span{display:block;width:1px;height:58px;background:linear-gradient(#a58bff,transparent)}
+    .end-marker small{margin-top:18px;font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.16em}
+    .progress{position:fixed;z-index:9;top:0;left:0;width:0;height:2px;background:linear-gradient(90deg,#a58bff,#70e9d6);box-shadow:0 0 14px #70e9d6;transition:width .12s linear}
+    .handoff{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:24px;background:#070912e8;backdrop-filter:blur(12px);opacity:0;pointer-events:none;transition:opacity .3s}
+    .handoff.show{opacity:1}.handoff-card{padding:28px 26px;border:1px solid #a58bff55;border-radius:24px;background:#17172b;box-shadow:0 24px 80px #02030c;text-align:center}.handoff-card b{display:block;color:#70e9d6;font-size:15px}.handoff-card span{display:block;margin-top:8px;color:#a9aec7;font-size:12px}
+    @keyframes scroll-dot{0%,100%{transform:translateY(-9px);opacity:.25}50%{transform:translateY(10px);opacity:1}}@media(min-width:640px){body{background:#070912}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="progress" id="progress"></div>
+    <div class="grain"></div>
+    <header>
+      <a class="brand" href="index.html"><span class="brand-mark">✦</span>MOVIE</a>
+      <span class="ready"><i></i>तैयार</span>
+    </header>
+    <main>
+      <div class="eyebrow">आपकी मूवी तैयार है</div>
+      <h1>मूवी का आनंद<br><span>शुरू करें</span></h1>
+      <p class="intro">नीचे तक स्क्रॉल करें। आख़िर में पहुँचते ही आपकी मूवी खुल जाएगी।</p>
+      <a class="scroll-cue" href="#end">
+        <strong>नीचे तक स्क्रॉल करें</strong>
+        <span class="scroll-icon" aria-hidden="true"></span>
+        <small>SCROLL TO CONTINUE</small>
+      </a>
+      <section class="preview" aria-label="Movie details">
+        <article class="preview-card"><b>01 / तैयार</b><p>आपके लिए चुना गया कंटेंट अब देखने के लिए तैयार है।</p></article>
+        <article class="preview-card"><b>02 / अनुभव</b><p>शांत होकर नीचे तक जाएँ और अगले पेज पर जारी रखें।</p></article>
+        <article class="preview-card"><b>03 / आगे बढ़ें</b><p>अंतिम चरण पर पहुँचते ही सुरक्षित तरीके से आगे बढ़ाया जाएगा।</p></article>
+      </section>
+      <div class="end-marker" id="end"><span></span><small>आप लगभग पहुँच गए हैं</small></div>
+    </main>
+  </div>
+  <div class="handoff" id="handoff" aria-hidden="true">
+    <div class="handoff-card"><b>अगला पेज खुल रहा है</b><span>कृपया एक क्षण प्रतीक्षा करें...</span></div>
+  </div>
+  <script>
+    const handoff=document.getElementById('handoff'),progress=document.getElementById('progress');
+    let opened=false,nearEndTimer;
+    const update=()=>{
+      const max=document.documentElement.scrollHeight-window.innerHeight;
+      const ratio=max>0?Math.min(window.scrollY/max,1):1;
+      progress.style.width=(ratio*100)+'%';
+      if(!opened&&ratio>=.985){clearTimeout(nearEndTimer);nearEndTimer=setTimeout(()=>{if(!opened){opened=true;handoff.classList.add('show');handoff.setAttribute('aria-hidden','false');setTimeout(()=>window.location.assign('wait.html'),450)}},260)}
+    };
+    window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
+  </script>
+</body>
+</html>
